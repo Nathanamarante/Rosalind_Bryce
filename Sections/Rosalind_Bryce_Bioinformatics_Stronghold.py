@@ -34,4 +34,24 @@ def reverse_complement(REVC_seq):
     complement = str.maketrans("ATCG", "TAGC")
     return REVC_seq.translate(complement)[::-1]
 
-print(reverse_complement(REVC_seq))  
+print(reverse_complement(REVC_seq))
+
+##FIB
+print(f"\nFIB: ")
+
+fib_1 = 29
+fib_2 = 2
+
+def fibonacci_rabbits(n, k):
+    if n == 1 or n == 2:
+        return 1
+    
+    f1, f2 = 1, 1
+    
+    for _ in range(3, n + 1):
+        f1, f2 = f2, f2 + k * f1
+        
+    return f2
+
+result = fibonacci_rabbits(fib_1, fib_2)
+print(f"Total of pairs after {fib_2} months: {result}")
