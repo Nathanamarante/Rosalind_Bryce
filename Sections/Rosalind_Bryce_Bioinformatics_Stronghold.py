@@ -55,3 +55,45 @@ def fibonacci_rabbits(n, k):
 
 result = fibonacci_rabbits(fib_1, fib_2)
 print(f"Total of pairs after {fib_2} months: {result}")
+
+##GC
+print(f"\nGC: ")
+
+from pathlib import Path
+
+fasta_arquivo = Path(__file__).with_name("rosalind_gc.txt")
+sequences = []
+sequence_name = None
+sequence_parts = []
+
+with open(fasta_arquivo, "r") as fasta_file:
+    for line in fasta_file:
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith(">"):
+            if sequence_name is not None:
+                sequences.append((sequence_name, "".join(sequence_parts)))
+            sequence_name = line[1:]
+            sequence_parts = []
+        else:
+            sequence_parts.append(line)
+
+if sequence_name is not None:
+    sequences.append((sequence_name, "".join(sequence_parts)))
+
+gc_percentages = [
+    (name, (sequence.count("G") + sequence.count("C")) / len(sequence) * 100)
+    for name, sequence in sequences
+    if sequence
+]
+
+if not gc_percentages:
+    raise ValueError(f"No FASTA sequences found in {fasta_arquivo}")
+
+for name, percentage in gc_percentages:
+    print(f"{name}: {percentage:.6f}% GC")
+
+highest_name, highest_percentage = max(gc_percentages, key=lambda item: item[1])
+print(f"\nHighest GC content: {highest_name}")
+print(f"GC Percentage: {highest_percentage:.6f}%")
